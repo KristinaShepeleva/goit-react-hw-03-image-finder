@@ -8,8 +8,8 @@ function ImageGallery({ images }) {
   return (
     <>
       <ul className={css.image_list}>
-        {images.map(image => (
-          <ImageGalleryItem key={image.id} image={image} />
+        {images.map((image, index, images) => (
+          <ImageGalleryItem key={image.id} image={image} images={images} index={index} />
         ))}
       </ul>
     </>
@@ -19,5 +19,7 @@ function ImageGallery({ images }) {
 export default ImageGallery;
 
 ImageGallery.propTypes = {
+  image: PropTypes.string,
+  id: PropTypes.number,
   images: PropTypes.array,
 };
