@@ -29,3 +29,7 @@
 .button_controls:hover {
     box-shadow: 2px 2px 5px #b097b2;
 }
+
+.button_controls:disabled {
+    background-color: rgb(174, 174, 174);
+}

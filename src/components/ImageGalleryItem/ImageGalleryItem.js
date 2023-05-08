@@ -26,7 +26,6 @@ class ImageGalleryItem extends Component {
     const { index } = this.state;
     const totalItems = images.length;
     const currentItem = images[index];
-    
    
     return (
       <li onClick={this.onModal} className={css.gallery_item}>
@@ -48,7 +47,9 @@ class ImageGalleryItem extends Component {
 }
 
 ImageGalleryItem.propTypes = {
+  images: PropTypes.array,
   image: PropTypes.object,
+  index: PropTypes.number,
 };
 
 export default ImageGalleryItem;

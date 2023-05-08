@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import css from 'components/Controls/Controls.module.css';
 
 export const Controls = ({ current, total, onChange }) => {
@@ -20,4 +21,11 @@ export const Controls = ({ current, total, onChange }) => {
       </button>
     </div>
   );
+};
+
+
+Controls.propTypes = {
+  current: PropTypes.number,
+  total: PropTypes.number,
+  onChange: PropTypes.func,
 };
