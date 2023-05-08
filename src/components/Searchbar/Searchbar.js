@@ -19,8 +19,6 @@ class Searchbar extends Component {
     this.setState({ query: '' });
   };
 
-
-
     render() {
         return (
             <header className={css.searchbar}>
