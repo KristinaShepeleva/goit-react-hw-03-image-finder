@@ -24,8 +24,8 @@ class Modal extends Component {
     }
   };
 
-  handleBackdropClick = e => {
-    if (e.currentTarget === e.target) {
+  onOverlayClose = e => {
+    if (e.currentTarget !== e.target) {
       this.props.onClose();
     }
   };
@@ -46,6 +46,6 @@ class Modal extends Component {
 export default Modal;
 
 Modal.propTypes = {
-    children: PropTypes.object,
+    children: PropTypes.node,
     onClose: PropTypes.func,
 };
