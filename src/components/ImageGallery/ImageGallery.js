@@ -4,6 +4,7 @@ import css from 'components/ImageGallery/ImageGallery.module.css'
 
 
 function ImageGallery({ images }) {
+ 
   return (
     <>
       <ul className={css.image_list}>
