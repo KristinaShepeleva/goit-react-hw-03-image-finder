@@ -24,7 +24,7 @@ class Modal extends Component {
     }
   };
 
-  onOverlayClose = e => {
+  onBackdropClose = e => {
     if (e.currentTarget !== e.target) {
       this.props.onClose();
     }
@@ -33,7 +33,7 @@ class Modal extends Component {
  
   render() {
     return createPortal(
-      <div onClick={this.onOverlayClose} className={css.modal__backdrop}>
+      <div onClick={this.onBackdropClose} className={css.modal__backdrop}>
             <div className={css.modal__content}>
                 {this.props.children}
         </div>
