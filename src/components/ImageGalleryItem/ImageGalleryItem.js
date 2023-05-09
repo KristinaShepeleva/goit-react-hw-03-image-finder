@@ -22,24 +22,25 @@ class ImageGalleryItem extends Component {
   };
 
   render() {
-    const { image, images } = this.props;
-    const { index } = this.state;
+    const { image, images, } = this.props;
+    const { index, shownModal } = this.state;
     const totalItems = images.length;
     const currentItem = images[index];
-   
+    
     return (
       <li onClick={this.onModal} className={css.gallery_item}>
         <img
           className={css.gallery_item_img}
           src={image.webformatURL}
-          alt="img"
+          alt={image.tags}
         />
-        {this.state.shownModal && <Modal onClose={this.onModal}>
-          <img src={currentItem.largeImageURL} alt="img" />
+        {shownModal && <Modal onClose={this.onModal}>
+          <img src={currentItem.largeImageURL} alt={currentItem.tags} />
           <Controls
           current={index + 1}
           total={totalItems}
-          onChange={this.changeIndex}/>
+            onChange={this.changeIndex} />
+          
         </Modal>}
       </li>
     );

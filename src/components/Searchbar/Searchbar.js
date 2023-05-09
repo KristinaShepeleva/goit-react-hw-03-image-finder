@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import css from 'components/Searchbar/Searchbar.module.css'
+import Notiflix from 'notiflix';
 
 class Searchbar extends Component {
      state = {
@@ -14,7 +15,9 @@ class Searchbar extends Component {
 
     handleSubmit = e => {
     e.preventDefault();
-
+    if (this.state.query.trim() === '') {
+      return Notiflix.Notify.info('The search field is empty, please try again.');
+    }
     this.props.onSubmit(this.state.query);
     this.setState({ query: '' });
   };

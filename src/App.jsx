@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Notiflix from 'notiflix';
 
-import { fetchImg } from 'components/fetchImg';
+import { fetchImages } from 'components/fetchImg';
 import Container from 'components/Container/Container'
 import Searchbar from 'components/Searchbar/Searchbar';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
@@ -10,120 +10,75 @@ import Button from 'components/Button/Button';
 
 
 
-class App extends Component {
-   state = {
-    searchValue: '',
+
+export class App extends Component {
+  state = {
     images: [],
+    query: '',
     page: 1,
-    status: 'idle',
-    totalImages: 0,
+    isLoading: false,
+    total: 0,
+    error: null,
   };
 
+  componentDidUpdate(prevProps, prevState) {
+     if (prevState.query !== this.state.query || prevState.page !== this.state.page) {
+       this.getImages(this.state.query, this.state.page);
+     }
+   }
 
-  handleSubmit = async searchValue => {
-    
-    this.setState({ page: 1 });
-
-    if (searchValue.trim() === '') {
-      Notiflix.Notify.info('The search field is empty, please try again.');
-      return;
-    } else {
-      try {
-      this.setState({ status: 'pending' });
-      const images = await fetchImg(searchValue, this.state.page);
-     
-      if (images.hits.length < 1) {
-        this.setState({ status: 'idle' });
-           Notiflix.Notify.failure(
-             'Sorry, there are no images for your search query. Please try again.'
-           );
-      } else {
-        this.setState(prevState => ({
-          images: images.hits,
-          searchValue,
-          totalImages: images.totalHits,
-          page: (prevState.page + 1),
-          status: 'resolved',
-        }));
-        Notiflix.Notify.success(`We find ${images.totalHits} images`);
-        }
-        
-    } catch (error) {
-        this.setState({ status: 'rejected' });
-        Notiflix.Notify.failure(
-             'Sorry, something went wrong. Please try again.'
-           );
-       }
-    }
-  };
-
-  handleNextPage = async () => {
-  this.setState({
-             status: 'pending',
-        });
   
-  try {
-    const images = await fetchImg(this.state.searchValue, this.state.page );
-
-      this.setState(prevState => ({
-        images: [...prevState.images, ...images.hits],
-        page: (prevState.page + 1),
-        status: 'resolved',
-      }));
-    
-    } catch (error) {
-      this.setState({ status: 'rejected' });
-      Notiflix.Notify.failure(
-             'Sorry, something went wrong. Please try again.'
+    getImages = async (query, page) => {
+    try {
+      this.setState({ isLoading: true });
+      const data = await fetchImages(query, page);
+      
+      if (data.hits.length === 0) {
+        return Notiflix.Notify.failure(
+              'Sorry, there are no images for your search query. Please try again.'
            );
+      }
+        this.setState(({ images }) => ({
+         images: [...images, ...data.hits],
+         total: data.totalHits,
+        }));
+      Notiflix.Notify.success(`We find ${data.totalHits} images`);
+    } catch (error) {
+      this.setState({ error });
+    } finally {
+      this.setState({ isLoading: false });
     }
   };
 
+    handleSubmit = query => {
+    this.setState({ query, page: 1, images: [] });
+  };
+
+  handleLoadMore = () => {
+    this.setState(prev => ({ page: prev.page + 1 }));
+  }
 
   render() {
-    const { totalImages, status, images } = this.state;
-    
-    if (status === 'idle') {
-      return (
-        <Container>
-          <Searchbar onSubmit={this.handleSubmit} />
-        </Container>
-      );
-    }
-    
-    if (status === 'pending') {
-      return (
-        <Container>
-          <Searchbar onSubmit={this.handleSubmit} />
-          <Loader />
-          <ImageGallery images={this.state.images} />
-          {totalImages > 12 && <Button onClick={this.handleNextPage} />}
-          
-       </Container>
-      );
-    }
-
-    if (status === 'resolved') {
-      return (
-       <Container>
-          <Searchbar onSubmit={this.handleSubmit} />
-          <ImageGallery images={this.state.images} />
-          {totalImages > 12 && totalImages > images.length && (
-            <Button onClick={this.handleNextPage} />
-          )}
-        </Container>
-      );
-    }
-   
-    if (status === 'rejected') {
-      return (
-        <Container>
-          <Searchbar onSubmit={this.handleSubmit} />
-          <p>Sorry, something went wrong. Please try again.</p>
-        </Container>
-      );
-    }
-
+    const { images, isLoading, total, error } = this.state;
+    const totalPage = total / images.length;
+    return (
+      <Container>
+        <Searchbar onSubmit={this.handleSubmit} />
+        {isLoading && <Loader />}
+        {images.length !== 0 && (
+           <ImageGallery images={images} />
+        )}
+        {totalPage > 1 && !isLoading && images.length !== 0 &&(
+           <Button onClick={this.handleLoadMore} />
+        )}
+        
+        {error && (
+          <p>
+            Sorry, something went wrong. Please try again.
+          </p>
+        )}
+      </Container>
+    )
   }
 }
 
