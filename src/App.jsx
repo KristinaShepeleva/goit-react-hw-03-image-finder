@@ -39,7 +39,7 @@ export class App extends Component {
          images: [...images, ...data.hits],
          total: data.totalHits,
         }));
-      Notiflix.Notify.success(`We find ${data.totalHits} images`);
+      
     } catch (error) {
       this.setState({ error });
     } finally {
