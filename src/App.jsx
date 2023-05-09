@@ -57,7 +57,7 @@ class App extends Component {
     }
   };
 
-  onNextPage = async () => {
+  handleNextPage = async () => {
   this.setState({
              status: 'pending',
         });
@@ -97,7 +97,7 @@ class App extends Component {
           <Searchbar onSubmit={this.handleSubmit} />
           <Loader />
           <ImageGallery images={this.state.images} />
-          {totalImages > 12 && <Button onClick={this.onNextPage} />}
+          {totalImages > 12 && <Button onClick={this.handleNextPage} />}
           
        </Container>
       );
@@ -109,7 +109,7 @@ class App extends Component {
           <Searchbar onSubmit={this.handleSubmit} />
           <ImageGallery images={this.state.images} />
           {totalImages > 12 && totalImages > images.length && (
-            <Button onClick={this.onNextPage} />
+            <Button onClick={this.handleNextPage} />
           )}
         </Container>
       );
