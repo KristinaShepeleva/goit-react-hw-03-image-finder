@@ -22,7 +22,7 @@ class ImageGalleryItem extends Component {
   };
 
   render() {
-    const { image, images, } = this.props;
+    const { image, images } = this.props;
     const { index, shownModal } = this.state;
     const totalItems = images.length;
     const currentItem = images[index];
