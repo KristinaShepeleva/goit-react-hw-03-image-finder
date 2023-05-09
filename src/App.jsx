@@ -8,9 +8,6 @@ import ImageGallery from 'components/ImageGallery/ImageGallery';
 import Loader from 'components/Loader/Loader';
 import Button from 'components/Button/Button';
 
-
-
-
 export class App extends Component {
   state = {
     images: [],
