@@ -19,7 +19,5 @@ function ImageGallery({ images }) {
 export default ImageGallery;
 
 ImageGallery.propTypes = {
-  image: PropTypes.string,
-  id: PropTypes.number,
   images: PropTypes.array,
 };
